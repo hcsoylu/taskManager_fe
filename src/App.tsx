@@ -1,24 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import "./App.css";
+import axios from "axios";
+import Task from "./components/Task";
+import { ITasks } from "./Interface";
 
 function App() {
+  const [allData, setAllData] = useState<ITasks | null>(null);
+
+  useEffect(() => {
+    const getAllTasks = async (): Promise<void> => {
+      const res = await axios.get<ITasks>("http://localhost:5000/api/v1/tasks");
+      setAllData(res.data);
+    };
+    getAllTasks();
+  }, []);
+
+  console.log(allData);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Task Manager</h1>
+      {allData?.tasks.map((task) => (
+        <Task task={task} />
+      ))}
     </div>
   );
 }
