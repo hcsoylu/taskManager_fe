@@ -1,10 +1,9 @@
-export interface ITask {
+export type ITask = {
   name: string;
   completed: boolean;
   _id: string;
-  __v: number;
-}
+};
 
-export interface ITasks {
+export type ITasks = {
   tasks: ITask[];
-}
+};
